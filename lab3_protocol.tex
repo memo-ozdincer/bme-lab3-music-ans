@@ -12,13 +12,14 @@
 \usepackage{tcolorbox}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage{amssymb}
 
 \hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
 
 \pagestyle{fancy}
 \fancyhf{}
 \rhead{BME Lab 3 -- DIY}
-\lhead{Music \& Involuntary Muscle Tension}
+\lhead{Pushup Hand Width \& Muscle Recruitment}
 \rfoot{Page \thepage}
 
 \titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
@@ -36,7 +37,7 @@
 % ----------------------------------------------------------------
 \begin{center}
 {\LARGE \textbf{Laboratory 3: Do It Yourself}} \\[6pt]
-{\Large Effect of Music Genre on Involuntary Muscle Tension (EMG)} \\[10pt]
+{\Large Effect of Pushup Hand Width on Triceps vs.\ Pectoralis Recruitment} \\[10pt]
 {\normalsize BME -- Biosignal Acquisition \& Analysis} \\[4pt]
 {\normalsize Protocol \& Procedure Guide}
 \end{center}
@@ -45,29 +46,21 @@
 % ----------------------------------------------------------------
 \section{Hypothesis}
 
-\textit{If a subject listens to high-arousal music (heavy metal) while at rest, then the RMS amplitude of their surface EMG---particularly in the upper trapezius (a postural ``stress muscle'')---will increase relative to a silent baseline, indicating involuntary muscle tension driven by sympathetic arousal.  Low-arousal music (classical) will produce equal or lower tension than baseline due to parasympathetic-mediated relaxation.  Therefore, music genre modulates resting skeletal-muscle tone through the autonomic nervous system.}
+\textit{If a subject performs pushups with progressively wider hand placement, then the relative EMG activation of the pectoralis major will increase while the triceps brachii activation decreases, because a wider hand position lengthens the moment arm about the shoulder and shortens it about the elbow.  Therefore, hand width systematically shifts the mechanical demand---and thus motor unit recruitment---between the two primary pushup movers.}
 
 % ----------------------------------------------------------------
 \section{Background \& Rationale}
 
-Surface electromyography (EMG) measures the sum of motor unit action potentials (MUAPs) from underlying muscle fibres.  Even at ``rest,'' skeletal muscles maintain a baseline level of tonic activity driven by the gamma motor neuron loop.  This resting tone is modulated by descending input from the brainstem reticular formation, which itself is influenced by arousal level.
+A pushup is a closed kinetic chain exercise involving simultaneous elbow extension and shoulder horizontal adduction.  The two dominant muscles are:
 
-\textbf{Why music affects muscle tension:}
 \begin{itemize}[nosep]
-    \item Music activates the limbic system (amygdala, hypothalamus), which regulates the autonomic nervous system.
-    \item Increased sympathetic arousal raises reticulospinal drive, elevating baseline motor neuron excitability and therefore resting muscle tone.
-    \item The \textbf{upper trapezius} is particularly sensitive to psychological stress---it is the classic ``stress muscle'' that people tense involuntarily when anxious or aroused.
-    \item The \textbf{forearm flexors} serve as a comparison: a distal limb muscle less directly coupled to stress-related postural tone.
+    \item \textbf{Triceps brachii} --- the primary elbow extensor.  When the hands are \emph{narrow} (closer together), the elbow must flex more deeply and the moment arm about the elbow joint increases, demanding greater triceps force.
+    \item \textbf{Pectoralis major} --- the primary shoulder horizontal adductor.  When the hands are \emph{wide}, the shoulder is more abducted and the horizontal adduction moment arm increases, demanding greater pectoral force.
 \end{itemize}
 
-\textbf{Why two muscles?}  By recording both trapezius and forearm, we can test whether the effect is global (both muscles) or preferentially affects postural/stress-related musculature.
+By recording surface EMG from both muscles during narrow, standard, and wide pushups, we expect to observe a \textbf{crossover pattern}: triceps activation highest during narrow pushups, pectoralis activation highest during wide pushups, with standard pushups showing balanced recruitment.
 
-\textbf{Why these three genres?}  Same arousal--valence logic as any music psychophysiology study:
-\begin{itemize}[nosep]
-    \item \textbf{Classical (Debussy):} Low arousal, positive valence --- expected to relax
-    \item \textbf{Heavy metal (Metallica):} High arousal, mixed valence --- expected to increase tension
-    \item \textbf{Pop/funk (Earth, Wind \& Fire):} Moderate--high arousal, positive valence --- moderate effect
-\end{itemize}
+This effect is well-documented in exercise science (Cogley et al., 2005; Gouvali \& Boudolos, 2005) and provides a clear, measurable, and physiologically grounded result.
 
 % ----------------------------------------------------------------
 \section{Equipment Checklist}
@@ -76,159 +69,142 @@ Surface electromyography (EMG) measures the sum of motor unit action potentials 
 \begin{tabular}{@{} c l l @{}}
 \toprule
 $\square$ & BioRadio device & charged, turned ON \\
-$\square$ & 5 snap leads & 2 for CH1, 2 for CH2, 1 for GND \\
-$\square$ & 5 snap electrodes (adhesive) & gel-type recommended \\
-$\square$ & Alcohol wipes & for skin prep \\
+$\square$ & 5 snap leads + 5 snap electrodes & gel-type adhesive \\
+$\square$ & Alcohol wipes & skin prep \\
 $\square$ & Lab laptop with BioCapture & Design Studio computer \\
-$\square$ & AirPods Pro (or ANC over-ear headphones) & see Section~\ref{sec:audio} \\
-$\square$ & iPhone / phone with dB meter & for volume calibration \\
-$\square$ & Stopwatch / timer & phone timer or watch \\
+$\square$ & Measuring tape & to measure shoulder width \\
+$\square$ & Masking tape + marker & to mark hand positions on the floor \\
+$\square$ & Stopwatch / timer & phone or watch \\
 $\square$ & Pen + printed copy of this protocol & for timestamp log \\
-$\square$ & USB drive or cloud & to transfer exported CSV after \\
+$\square$ & USB drive or cloud & to transfer CSV after \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 % ----------------------------------------------------------------
-\section{Audio Setup}
-\label{sec:audio}
+\section{Hand Width Definitions}
 
-\subsection{Headphone Selection (in order of preference)}
-\begin{enumerate}[nosep]
-    \item \textbf{AirPods Pro:} Active Noise Cancellation \textbf{ON}, Transparency \textbf{OFF}.
-    \item \textbf{Over-ear closed-back ANC headphones} (Sony, Bose, etc.): ANC \textbf{ON}.
-    \item \textbf{Over-ear closed-back passive headphones}: acceptable if the lab is quiet.
-\end{enumerate}
+Before placing electrodes, \textbf{measure the subject's biacromial shoulder width} (distance between the two bony tips of the shoulders---the acromions) with the measuring tape.
 
-\begin{warningbox}
-\textbf{Do NOT use:} open-back headphones, earbuds without ANC, laptop speakers, or Transparency mode.  Ambient noise is an uncontrolled stimulus that will confound your results.
-\end{warningbox}
+\vspace{0.2cm}
+\textbf{My shoulder width:} \underline{\hspace{3cm}} cm
+\vspace{0.2cm}
 
-\subsection{Volume Calibration --- 70\,dB SPL}
-
-\begin{tcolorbox}[colback=yellow!5!white, colframe=orange!60!black, title=\textbf{How to set 70\,dB with AirPods + iPhone}]
-\begin{enumerate}[nosep]
-    \item Open \textbf{Settings $\rightarrow$ Control Center}.  Add \textbf{Hearing} if not already there.
-    \item Connect AirPods.  Play 30\,s of any experimental track.
-    \item Swipe into Control Center, tap the \textbf{ear icon} (Hearing).
-    \item Adjust volume until the reading is \textbf{70\,dB}.
-    \item \textbf{Lock the volume.}  Do not touch it for the entire experiment.
-\end{enumerate}
-\end{tcolorbox}
-
-\begin{infobox}
-\textbf{No AirPods / no iOS?} Use the free \textbf{NIOSH SLM} app (iOS) or \textbf{Sound Meter} (Android).  Hold the phone mic at the headphone driver, play a test track, adjust to 70\,dB.
-\end{infobox}
-
-\textbf{Same dB across all genres.} Do not adjust volume between songs. 70\,dB is a comfortable level that avoids startle confounds (which would cause EMG artifacts).
-
-% ----------------------------------------------------------------
-\section{Song Selection}
+The three hand positions are defined as the distance between the \emph{centres of the palms} when in pushup position:
 
 \begin{center}
 \renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{@{} l l X l @{}}
+\begin{tabular}{@{} l c p{6cm} @{}}
 \toprule
-\textbf{Condition} & \textbf{Song} & \textbf{Why} & \textbf{Start at} \\
+\textbf{Width} & \textbf{Hand spacing} & \textbf{Description} \\
 \midrule
-Calm & Debussy -- \textit{Clair de Lune} & Slow tempo ($\sim$72\,BPM), instrumental, consonant. & 0:00 \\
-Intense & Metallica -- \textit{Master of Puppets} & Fast tempo ($\sim$212\,BPM), distorted, aggressive. & 0:00 \\
-Happy & Earth, Wind \& Fire -- \textit{September} & Major key, danceable ($\sim$126\,BPM), positive. & 0:00 \\
+Narrow   & $0.5 \times$ shoulder width & Hands close together, roughly beneath the centre of the chest.  Thumbs may nearly touch. \\
+Standard & $1.0 \times$ shoulder width & Hands directly below the shoulders. \\
+Wide     & $1.5 \times$ shoulder width & Hands well outside the shoulders. \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{center}
 
-\begin{tipbox}
-Pre-download all three songs for offline playback (no ads/buffering).  Queue them in order: Debussy $\rightarrow$ Metallica $\rightarrow$ September.  Put your phone in \textbf{Do Not Disturb}.
-\end{tipbox}
+\textbf{Mark positions on the floor} with 3 strips of tape at each width.  The subject can then quickly slide their hands to the correct marks between sets without guessing.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{} l c @{}}
+\toprule
+\textbf{Width} & \textbf{My hand spacing (cm)} \\
+\midrule
+Narrow ($0.5\times$)   & \underline{\hspace{3cm}} \\
+Standard ($1.0\times$) & \underline{\hspace{3cm}} \\
+Wide ($1.5\times$)     & \underline{\hspace{3cm}} \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 % ----------------------------------------------------------------
 \section{BioRadio \& Electrode Setup}
 
-This follows the same general procedure as Lab~2 Path~2, with different electrode placement.
-
 \subsection{BioCapture Configuration}
 
 \begin{enumerate}[nosep]
-    \item Open BioCapture.  \textbf{Do not} connect the BioRadio to the computer yet.
-    \item Turn the BioRadio ON.
-    \item In BioCapture: \textbf{Device $\rightarrow$ Select Device $\rightarrow$} your group's BioRadio $\rightarrow$ \textbf{Connect}.
+    \item Open BioCapture.  Turn the BioRadio ON.
+    \item \textbf{Device $\rightarrow$ Select Device $\rightarrow$} your BioRadio $\rightarrow$ \textbf{Connect}.
     \item Click \textbf{Device Config}:
     \begin{itemize}[nosep]
-        \item Check \textbf{CH1}.  Name it \textbf{``Forearm''}.  Type: \textbf{EMG}.
-        \item Check \textbf{CH2}.  Name it \textbf{``Trapezius''}.  Type: \textbf{EMG}.
-        \item Uncheck any other channels.
-        \item Set sampling rate to \textbf{2\,kHz}.
+        \item Check \textbf{CH1}.  Name: \textbf{``Triceps''}.  Type: \textbf{EMG}.
+        \item Check \textbf{CH2}.  Name: \textbf{``Pectoralis''}.  Type: \textbf{EMG}.
+        \item Uncheck other channels.
+        \item Sampling rate: \textbf{2\,kHz}.
     \end{itemize}
     \item Click \textbf{Program Device}.
 \end{enumerate}
 
 \subsection{Electrode Placement}
 
-You need \textbf{5 electrodes}: 2 for CH1, 2 for CH2, 1 ground.
+All electrodes go on the \textbf{same side} of the body (dominant arm side, usually right).  Use the subject's dominant arm because it typically has better motor control and produces cleaner signals.
 
 \begin{center}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{} l l p{7cm} @{}}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{} l l p{7.5cm} @{}}
 \toprule
-\textbf{Channel} & \textbf{Muscle} & \textbf{Electrode Placement} \\
+\textbf{Channel} & \textbf{Muscle} & \textbf{Placement} \\
 \midrule
-CH1 (+/--) & Forearm flexors & Two electrodes on the \textbf{center of the inner forearm}, $\sim$3\,cm apart, along the muscle belly.  Same placement as Lab~2. \\
+CH1 (+/--) & Triceps brachii (lateral head) & Two electrodes on the \textbf{back of the upper arm}, midway between the shoulder (posterior deltoid fold) and the elbow (olecranon).  Place them $\sim$3\,cm apart, \textbf{along} the length of the arm (parallel to the muscle fibres). \\
 \addlinespace
-CH2 (+/--) & Upper trapezius & Two electrodes on the \textbf{upper trapezius}, midway between the C7 vertebra (the bony bump at the base of your neck) and the acromion (tip of your shoulder).  Place them $\sim$3\,cm apart, along the muscle fibres (i.e., along the line from neck to shoulder). \\
+CH2 (+/--) & Pectoralis major (sternal portion) & Two electrodes on the \textbf{chest}, approximately 2 finger-widths below the collarbone, at the midpoint between the sternum and the anterior axillary fold (armpit crease).  Place them $\sim$3\,cm apart, roughly \textbf{horizontal} (along the fibre direction). \\
 \addlinespace
-GND & --- & One electrode on the \textbf{bony part of the elbow} (olecranon). \\
+GND & --- & One electrode on the \textbf{acromion} (bony tip of the shoulder on the same side).  This is between the two measurement sites, minimising common-mode noise. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \textbf{Skin preparation:}
 \begin{itemize}[nosep]
-    \item Clean each electrode site with an alcohol wipe.  Let it dry for 10\,seconds.
-    \item This removes oils and dead skin, improving electrode--skin contact and reducing impedance.
+    \item Clean each electrode site with an alcohol wipe.  Let dry 10\,s.
+    \item For best adhesion during pushups, firmly press down the edges of each electrode.
+    \item If the subject has significant body hair at the electrode sites, shaving may improve signal quality (optional, ask the subject first).
 \end{itemize}
 
-\textbf{Wire connections (same colour scheme as Lab~2):}
+\begin{warningbox}
 \begin{itemize}[nosep]
-    \item CH1 +/-- (black and red plugs next to blue GND) $\rightarrow$ forearm electrodes
-    \item CH2 +/-- (red and black plugs next to CH1) $\rightarrow$ trapezius electrodes
-    \item GND (blue plug) $\rightarrow$ elbow electrode
+    \item Warm up before doing pushups (arm circles, light stretching) to prevent injury.
+    \item If the subject feels pain in their wrists, shoulders, or chest, \textbf{stop immediately}.
+    \item The narrow pushup width puts extra stress on the wrists.  If uncomfortable, widen slightly.
+    \item Do \textbf{not} do pushups to failure.  5 controlled reps per set is sufficient.
 \end{itemize}
+\end{warningbox}
 
 \subsection{Signal Check}
 
 \begin{enumerate}[nosep]
     \item Click \textbf{Run} in BioCapture.  Set Graph Timespan to \textbf{10\,s}.
-    \item Right-click the y-axis of each graph $\rightarrow$ \textbf{Y-Axis $\rightarrow$ Auto Scale Quick}.
-    \item You should see a low-amplitude noisy baseline on both channels.
-    \item \textbf{Test:} briefly shrug your shoulders---CH2 (trapezius) should spike.  Make a fist---CH1 (forearm) should spike.
-    \item If a channel is flat or railed, check the corresponding electrode connections and skin prep.
+    \item Right-click y-axis $\rightarrow$ \textbf{Y-Axis $\rightarrow$ Auto Scale Quick} on both channels.
+    \item \textbf{Test CH1 (Triceps):} extend your arm straight behind you (like a tricep kickback) --- CH1 should spike.
+    \item \textbf{Test CH2 (Pec):} press your palms together in front of your chest --- CH2 should spike.
+    \item If a channel is flat or railed: re-check electrode connections, skin prep, and ground.
 \end{enumerate}
 
 % ----------------------------------------------------------------
 \section{Experimental Protocol}
-\label{sec:protocol}
 
-\textbf{Total duration: $\sim$20 minutes of recording + 5 minutes setup.}
+\textbf{Total duration: $\sim$7--8 minutes of recording.}
 
 \subsection{Pre-experiment Checklist}
 
 \begin{enumerate}[nosep]
-    \item[$\square$] BioRadio connected, channels configured, signal verified (Section~6).
-    \item[$\square$] Songs downloaded and queued on phone.
-    \item[$\square$] AirPods connected, ANC ON, volume set to 70\,dB.
-    \item[$\square$] Stopwatch ready.
-    \item[$\square$] Printed protocol + pen in front of you.
-    \item[$\square$] Subject seated comfortably: feet flat on floor, forearms resting on table, shoulders relaxed (not hunched).
+    \item[$\square$] Shoulder width measured, hand positions marked with tape on the floor.
+    \item[$\square$] BioRadio connected, channels configured, signals verified.
+    \item[$\square$] BioRadio clipped to subject's waistband or placed near pushup area.
+    \item[$\square$] Electrode edges pressed down firmly (they'll peel during pushups if loose).
+    \item[$\square$] Subject has warmed up (arm circles, a few practice pushups).
+    \item[$\square$] Stopwatch ready.  Printed protocol + pen in hand.
 \end{enumerate}
 
 \subsection{Recording Procedure}
 
-Your lab partner operates the timer, music controls, and BioCapture recording.  The subject (you) sits still.
+The \textbf{partner} operates BioCapture, the stopwatch, and calls out instructions.  The \textbf{subject} does the pushups.
 
 \begin{enumerate}
-    \item \textbf{Start recording:} In BioCapture, click the \textbf{Record} button (red dot).  Save the file as \texttt{music\_emg}. Recording begins automatically.
-    \item \textbf{Start the stopwatch} at the same moment.  Write down the start time below.
+    \item \textbf{Start recording:} Click \textbf{Record} (red dot) in BioCapture.  Save as \texttt{pushup\_emg}.  Start the stopwatch simultaneously.
 \end{enumerate}
 
 \begin{center}
@@ -238,25 +214,31 @@ Your lab partner operates the timer, music controls, and BioCapture recording.  
 \textbf{\#} & \textbf{Condition} & \textbf{Duration} & \textbf{Stopwatch} & \textbf{Instructions} \\
 \midrule
 \rowcolor{gray!10}
-1 & Silence (Baseline) & 3 min & 0:00 & Sit still, eyes open, breathe normally.  No talking, no phone. \\
-2 & Silence (Recovery) & 2 min & 3:00 & Continue sitting still. \\
-\rowcolor{blue!5}
-3 & Calm Music & 3 min & 5:00 & Partner plays \textit{Clair de Lune}. Listen passively. \\
-4 & Silence (Recovery) & 2 min & 8:00 & Partner pauses music. \\
-\rowcolor{red!5}
-5 & Intense Music & 3 min & 10:00 & Partner plays \textit{Master of Puppets}. Listen passively. \\
-6 & Silence (Recovery) & 2 min & 13:00 & Partner pauses music. \\
-\rowcolor{yellow!10}
-7 & Happy Music & 3 min & 15:00 & Partner plays \textit{September}. Listen passively. \\
-8 & Silence (Recovery) & 2 min & 18:00 & Partner pauses music. Final cooldown. \\
+1 & Baseline rest & 1 min & 0:00 & Subject lies in pushup-ready position (arms extended), stays still. \\
+\rowcolor{red!8}
+2 & \textbf{Narrow pushups} & $\sim$30\,s & 1:00 & Partner says ``Go.'' Subject does \textbf{5 slow, controlled reps}. 4\,s per rep: 2\,s down, 2\,s up. \\
+\rowcolor{gray!10}
+3 & Rest & 2 min & 1:30 & Subject stays in position or kneels.  Relax arms. \\
+\rowcolor{blue!8}
+4 & \textbf{Standard pushups} & $\sim$30\,s & 3:30 & Move hands to standard marks.  5 reps, same tempo. \\
+\rowcolor{gray!10}
+5 & Rest & 2 min & 4:00 & Relax. \\
+\rowcolor{yellow!15}
+6 & \textbf{Wide pushups} & $\sim$30\,s & 6:00 & Move hands to wide marks.  5 reps, same tempo. \\
+\rowcolor{gray!10}
+7 & Cooldown & 1 min & 6:30 & Stay in pushup position, arms extended, stay still. \\
 \midrule
-& \textbf{STOP} & & 20:00 & Partner clicks \textbf{Record} again to stop.  Data auto-saves. \\
+& \textbf{STOP} & & 7:30 & Click \textbf{Record} again to stop. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
+\begin{tipbox}
+\textbf{Tempo control:} Have the partner count out loud:  ``Down-two-three-four, Up-two-three-four'' for each rep.  Consistent tempo is important so that differences in EMG are due to hand width, not speed.
+\end{tipbox}
+
 \vspace{0.3cm}
-\textbf{Timestamp log} (write actual stopwatch times here in case of delays):
+\textbf{Timestamp log:}
 
 \begin{center}
 \renewcommand{\arraystretch}{1.5}
@@ -264,70 +246,66 @@ Your lab partner operates the timer, music controls, and BioCapture recording.  
 \toprule
 \textbf{Event} & \textbf{Actual stopwatch time} \\
 \midrule
-Recording started (Record button pressed)                   & \underline{\hspace{3cm}} \\
-Baseline started (Phase 1)                                  & \underline{\hspace{3cm}} \\
-Recovery 1 started (Phase 2)                                & \underline{\hspace{3cm}} \\
-Calm music started -- \textit{Clair de Lune} (Phase 3)      & \underline{\hspace{3cm}} \\
-Recovery 2 started (Phase 4)                                & \underline{\hspace{3cm}} \\
-Intense music started -- \textit{Master of Puppets} (Phase 5) & \underline{\hspace{3cm}} \\
-Recovery 3 started (Phase 6)                                & \underline{\hspace{3cm}} \\
-Happy music started -- \textit{September} (Phase 7)         & \underline{\hspace{3cm}} \\
-Recovery 4 started (Phase 8)                                & \underline{\hspace{3cm}} \\
-Recording stopped                                           & \underline{\hspace{3cm}} \\
+Recording started                    & \underline{\hspace{3cm}} \\
+Baseline started                     & \underline{\hspace{3cm}} \\
+Narrow pushups -- first rep          & \underline{\hspace{3cm}} \\
+Narrow pushups -- last rep finished  & \underline{\hspace{3cm}} \\
+Standard pushups -- first rep        & \underline{\hspace{3cm}} \\
+Standard pushups -- last rep finished & \underline{\hspace{3cm}} \\
+Wide pushups -- first rep            & \underline{\hspace{3cm}} \\
+Wide pushups -- last rep finished    & \underline{\hspace{3cm}} \\
+Recording stopped                    & \underline{\hspace{3cm}} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\subsection{Critical Rules During Recording}
+\subsection{Pushup Form}
+
+Consistent form is critical---differences in form create differences in EMG that confound the hand-width effect.
 
 \begin{itemize}[nosep]
-    \item \textbf{Do not move.}  Any movement creates massive EMG artefacts that dwarf the resting-tension signal.  Keep arms flat on the table, shoulders relaxed.
-    \item \textbf{Do not talk, swallow frequently, or clench your jaw.}  These activate neck/facial muscles that can couple into the trapezius signal.
-    \item \textbf{Do not look at the BioCapture screen.}  Seeing your own signals can cause anxiety (a confound).  Have the screen face your partner.
-    \item \textbf{Breathe normally.}  Deep breathing changes thoracic muscle activity.
-    \item \textbf{Do not tap, bob your head, or move to the music.}
+    \item \textbf{Body position:} Straight line from head to heels.  No sagging hips or piking.
+    \item \textbf{Depth:} Lower until the upper arm is \textbf{parallel to the floor} (roughly 90$^\circ$ elbow flexion).  Do not go deeper for narrow pushups just because it's possible---match depth across all widths.
+    \item \textbf{Speed:} 4 seconds per rep (2\,s eccentric / 2\,s concentric).  Partner counts tempo.
+    \item \textbf{Breathing:} Inhale on the way down, exhale on the way up.  Do not hold your breath.
+    \item \textbf{If the subject cannot complete 5 reps at a given width:} Do as many as possible with good form.  Note the actual number in the log.
 \end{itemize}
 
 % ----------------------------------------------------------------
 \section{Data Export}
 
-After the experiment:
-
 \begin{enumerate}[nosep]
-    \item In BioCapture: \textbf{Open $\rightarrow$ Recording\ldots} $\rightarrow$ select \texttt{music\_emg}.
-    \item Click \textbf{Data $\rightarrow$ Export to .CSV File}.  Name it \texttt{lab3\_emg\_data.csv}.  Click Export.
-    \item Transfer the CSV to the computer where you will run the analysis (USB drive, email, cloud, etc.).
-    \item Place the CSV in the same folder as \texttt{analyze\_emg.py}.
+    \item In BioCapture: \textbf{Open $\rightarrow$ Recording\ldots} $\rightarrow$ select \texttt{pushup\_emg}.
+    \item \textbf{Data $\rightarrow$ Export to .CSV File}.  Name it \texttt{lab3\_emg\_data.csv}.  Click Export.
+    \item Transfer the CSV to the computer with \texttt{analyze\_emg.py}.
 \end{enumerate}
 
 % ----------------------------------------------------------------
 \section{Data Analysis}
 
-\subsection{Setup (one-time)}
+\subsection{Setup}
 \begin{enumerate}[nosep]
-    \item Install Python dependencies: \texttt{pip3 install numpy scipy matplotlib pandas}
-    \item Open \texttt{analyze\_emg.py} in a text editor.
-    \item Update \texttt{PHASE\_START\_S} with your actual stopwatch timestamps (convert MM:SS to seconds).
-    \item Verify the column indices match your CSV.  Biocapture typically exports: column~0 = Time, column~1 = CH1, column~2 = CH2.  If your CSV differs, update \texttt{TIME\_COL}, \texttt{CH1\_COL}, \texttt{CH2\_COL}.
+    \item Install: \texttt{pip3 install numpy scipy matplotlib pandas}
+    \item Open \texttt{analyze\_emg.py}.  Update \texttt{PHASE\_START\_S} with your actual timestamps.
     \item Run: \texttt{python3 analyze\_emg.py}
 \end{enumerate}
 
-\subsection{What the Script Produces}
+\subsection{Output Figures}
 
 \begin{enumerate}[nosep]
-    \item \textbf{fig1\_emg\_timeseries.png} --- RMS envelope of both channels over the full 20 minutes, with phase markers.  This is the main result figure.
-    \item \textbf{fig2\_emg\_comparison.png} --- Bar charts of mean RMS (mV) per condition for forearm and trapezius, with standard deviation error bars.
-    \item \textbf{fig3\_emg\_snippets.png} --- 2-second raw EMG snippets from each condition, showing the waveform character (amplitude, burst activity).
-    \item \textbf{fig4\_emg\_spectrum.png} --- Power spectral density of the EMG for each condition.  Useful for verifying signal quality (should see power in the 20--450\,Hz band, not dominated by 60\,Hz noise).
-    \item \textbf{Console table} --- Mean $\pm$ SD of RMS amplitude per phase.
+    \item \textbf{fig1\_emg\_timeseries.png} --- RMS envelope of both channels over the full recording.  You should see clear bursts during each pushup set with distinct amplitude differences.
+    \item \textbf{fig2\_emg\_comparison.png} --- Bar charts of mean RMS per condition for each muscle, including baseline for reference.
+    \item \textbf{fig3\_grouped\_comparison.png} --- \textbf{Key figure:} grouped bar chart showing triceps vs.\ pectoralis side-by-side at each width.  This is where the crossover pattern should be visible.
+    \item \textbf{fig4\_emg\_snippets.png} --- 2-second raw EMG windows from each width, showing waveform amplitude differences.
+    \item \textbf{fig5\_peak\_comparison.png} --- Peak RMS during each set.
 \end{enumerate}
 
-\subsection{Signal Processing Details (for your report)}
-
+\subsection{Signal Processing}
 \begin{itemize}[nosep]
-    \item \textbf{Bandpass filter:}  4th-order Butterworth, 20--450\,Hz.  The 20\,Hz high-pass removes motion artefact and DC offset.  The 450\,Hz low-pass is below the Nyquist frequency ($F_s/2 = 1000$\,Hz).
-    \item \textbf{RMS envelope:}  Root-mean-square computed in a 250\,ms sliding window.  RMS is the standard measure of EMG amplitude because it is proportional to the number of active motor units and their firing rates.
-    \item \textbf{Power spectrum:}  FFT of each phase's filtered EMG.  The median frequency of the power spectrum can indicate fatigue (shifts lower), though this is less relevant for resting measurements.
+    \item \textbf{Bandpass filter:} 20--450\,Hz (4th-order Butterworth).  Removes motion artifact (low freq) and high-frequency noise.
+    \item \textbf{RMS envelope:} 250\,ms sliding window.  Proportional to the number and firing rate of active motor units.
+    \item \textbf{Mean RMS:} Average over the entire pushup set.  Reflects overall muscle demand.
+    \item \textbf{Peak RMS:} Maximum RMS in the set.  Reflects peak effort (usually during the concentric ``push'' phase).
 \end{itemize}
 
 % ----------------------------------------------------------------
@@ -337,30 +315,28 @@ After the experiment:
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{@{} l c c @{}}
 \toprule
-\textbf{Condition vs.\ Baseline} & \textbf{Forearm EMG RMS} & \textbf{Trapezius EMG RMS} \\
+\textbf{Hand width} & \textbf{Triceps EMG} & \textbf{Pectoralis EMG} \\
 \midrule
-Calm Music     & no change or slight decrease & decrease (relaxation) \\
-Intense Music  & slight increase & \textbf{increase} (stress response) \\
-Happy Music    & slight increase & slight increase \\
+Narrow   & \textbf{Highest} & Lowest \\
+Standard & Moderate & Moderate \\
+Wide     & Lowest & \textbf{Highest} \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The trapezius is expected to show the largest effect because it is a postural muscle strongly coupled to stress/arousal pathways (reticulospinal tract).  The forearm, being a distal voluntary-use muscle, may show a smaller or no effect.
+This crossover pattern reflects the shift in mechanical demand: narrow pushups emphasise elbow extension (triceps), while wide pushups emphasise shoulder horizontal adduction (pectoralis).
 
-If your results differ, discuss possible reasons in your reflection: individual differences in music preference, electrode placement quality, difficulty staying perfectly still, etc.
+If the crossover is not clean, discuss possible reasons: inconsistent depth, electrode placement, fatigue from earlier sets, subject's individual anatomy, etc.
 
 % ----------------------------------------------------------------
 \section{Report Structure}
 
-Submit a single PDF containing:
-
 \begin{enumerate}[nosep]
-    \item \textbf{Background \& Rationale} ($\sim$0.5 page): How music affects the nervous system and why it might modulate resting muscle tension.
+    \item \textbf{Background} ($\sim$0.5 page): Pushup biomechanics, why hand width changes muscle demand.
     \item \textbf{Hypothesis:} The if/then/therefore statement.
-    \item \textbf{Methods} ($\sim$0.5 page): BioRadio setup, electrode placement, audio setup (headphone type, dB), song choices, protocol timeline.
-    \item \textbf{Results} ($\sim$1 page): Figures 1--4 with descriptions.
-    \item \textbf{Reflection} ($\sim$0.5 page): Did results support the hypothesis?  What would you change?  Limitations (single subject, no counterbalancing, genre is a compound variable, etc.).
+    \item \textbf{Methods} ($\sim$0.5 page): Electrode placement, hand widths (with measurements), pushup protocol, rep tempo.
+    \item \textbf{Results} ($\sim$1 page): Figures 1--5 with descriptions.  Emphasise the grouped bar chart.
+    \item \textbf{Reflection} ($\sim$0.5 page): Did you observe the crossover?  What would you change?  Limitations (single subject, no randomisation of order, possible fatigue effect, etc.).
 \end{enumerate}
 
 % ----------------------------------------------------------------
@@ -370,17 +346,15 @@ Submit a single PDF containing:
 \toprule
 \textbf{Problem} & \textbf{Solution} \\
 \midrule
-BioRadio won't connect & Turn off and on.  Make sure Bluetooth is enabled on the laptop.  Try Device $\rightarrow$ Select Device again. \\
+Electrode peels off during pushups & Press edges down firmly.  Use extra medical tape over the electrode if needed.  Ensure skin was dry after alcohol wipe. \\
 \addlinespace
-Signal is flat on one channel & Check snap lead is firmly connected to the electrode.  Check the electrode is making good skin contact (press down edges).  Re-prep skin with alcohol wipe. \\
+Signal clips during pushups & Right-click y-axis $\rightarrow$ Auto Scale Quick.  If it still clips, the gain may be too high---consult your TA about adjusting BioCapture settings. \\
 \addlinespace
-Large 60\,Hz oscillation visible & Move laptop charger away from electrodes.  Ensure ground electrode has good contact.  The bandpass filter in the analysis script will attenuate this, but better to minimize at source. \\
+Both channels look similar across all widths & Check electrode placement---the pec electrode should be on the chest (not the anterior deltoid), and the triceps electrode should be on the back of the arm (not the lateral deltoid). \\
 \addlinespace
-Signal clips / rails to max & Right-click y-axis $\rightarrow$ Auto Scale Quick.  If it persists, the electrode may be poorly placed or the muscle is being contracted. \\
+Subject's wrists hurt during narrow pushups & Widen slightly (fists-width apart instead of thumbs touching).  Or do pushups on fists (knuckles) to keep wrists straight. \\
 \addlinespace
-CSV has unexpected columns & Open the CSV in a text editor.  Update the column indices (\texttt{TIME\_COL}, \texttt{CH1\_COL}, \texttt{CH2\_COL}) in \texttt{analyze\_emg.py} to match. \\
-\addlinespace
-Music interrupted by notification & Put phone in Do Not Disturb / Focus mode before starting. \\
+CSV column order unexpected & Open CSV in a text editor.  Update \texttt{TIME\_COL}, \texttt{CH1\_COL}, \texttt{CH2\_COL} in \texttt{analyze\_emg.py}. \\
 \bottomrule
 \end{tabularx}
 
