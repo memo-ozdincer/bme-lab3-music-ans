@@ -134,23 +134,27 @@ def main():
     fig1, (ax1, ax2) = plt.subplots(2, 1, figsize=(13, 6), sharex=True)
 
     ax1.plot(hr_times, inst_hr, "r.-", markersize=2, linewidth=0.5)
-    for i in range(n_phases):
-        ax1.axvline(PHASE_START_S[i], color="gray", linestyle="--", linewidth=0.7)
-        ax1.text(
-            PHASE_START_S[i] + 5, ax1.get_ylim()[0] if i > 0 else 0,
-            PHASE_NAMES[i], fontsize=6, rotation=90, va="bottom", color="gray",
-        )
     ax1.set_ylabel("Heart Rate (BPM)")
     ax1.set_title("Instantaneous Heart Rate")
     ax1.grid(True, alpha=0.3)
 
     ax2.plot(time_s, eda_uS, "b-", linewidth=0.5)
-    for i in range(n_phases):
-        ax2.axvline(PHASE_START_S[i], color="gray", linestyle="--", linewidth=0.7)
     ax2.set_ylabel("Skin Conductance (\u03bcS)")
     ax2.set_xlabel("Time (s)")
     ax2.set_title("Electrodermal Activity")
     ax2.grid(True, alpha=0.3)
+
+    # Add phase markers after data is plotted (so axis limits are set)
+    for ax in [ax1, ax2]:
+        ylo, yhi = ax.get_ylim()
+        for i in range(n_phases):
+            ax.axvline(PHASE_START_S[i], color="gray", linestyle="--", linewidth=0.7, alpha=0.6)
+            # Place label near top of plot area
+            ax.text(
+                PHASE_START_S[i] + 5, yhi - 0.05 * (yhi - ylo),
+                PHASE_NAMES[i], fontsize=6, rotation=90,
+                va="top", ha="left", color="dimgray",
+            )
 
     fig1.tight_layout()
     fig1.savefig("fig1_timeseries.png", dpi=200)
