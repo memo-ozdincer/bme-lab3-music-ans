@@ -1,0 +1,19 @@
+# Data files (generated during experiment)
+lab3_raw_data.csv
+
+# Generated figures
+fig*.png
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Python
+__pycache__/
+*.pyc
+.DS_Store

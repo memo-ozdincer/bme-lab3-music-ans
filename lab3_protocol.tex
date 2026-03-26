@@ -1,0 +1,409 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{multirow}
+\usepackage{tabularx}
+
+\hypersetup{colorlinks=true, linkcolor=blue!60!black, urlcolor=blue!60!black}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{BME Lab 3 -- DIY}
+\lhead{Music \& the Autonomic Nervous System}
+\rfoot{Page \thepage}
+
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\newtcolorbox{warningbox}{colback=red!5!white, colframe=red!60!black,
+  title={\textbf{Safety Warning}}, fonttitle=\bfseries}
+\newtcolorbox{infobox}{colback=blue!5!white, colframe=blue!50!black,
+  title={\textbf{Note}}, fonttitle=\bfseries}
+\newtcolorbox{tipbox}{colback=green!5!white, colframe=green!40!black,
+  title={\textbf{Tip}}, fonttitle=\bfseries}
+
+\begin{document}
+
+% ----------------------------------------------------------------
+\begin{center}
+{\LARGE \textbf{Laboratory 3: Do It Yourself}} \\[6pt]
+{\Large Effect of Music Genre on Heart Rate and Skin Conductance} \\[10pt]
+{\normalsize BME -- Biosignal Acquisition \& Analysis} \\[4pt]
+{\normalsize Protocol \& Procedure Guide}
+\end{center}
+\vspace{0.5cm}
+
+% ----------------------------------------------------------------
+\section{Hypothesis}
+
+\textit{If a subject listens to high-arousal music (heavy metal), then their heart rate and electrodermal activity will increase relative to a silent baseline; low-arousal music (classical) will produce a smaller or no increase; and positively-valenced music (pop/funk) will produce a moderate increase in heart rate with a smaller EDA change. Therefore, the autonomic nervous system responds proportionally to the arousal level of the auditory stimulus.}
+
+% ----------------------------------------------------------------
+\section{Background \& Rationale}
+
+Music activates the autonomic nervous system (ANS) through subcortical pathways involving the amygdala, hypothalamus, and brainstem. Two measurable consequences of this activation are:
+
+\begin{itemize}[nosep]
+    \item \textbf{Heart rate (HR):} Regulated by both sympathetic (increase) and parasympathetic/vagal (decrease) branches. High-tempo, loud, dissonant music tends to increase HR via sympathetic activation; slow, consonant music may decrease HR through parasympathetic dominance.
+    \item \textbf{Electrodermal activity (EDA):} Controlled \emph{exclusively} by the sympathetic nervous system (eccrine sweat glands have no parasympathetic innervation). EDA therefore provides a pure index of sympathetic arousal. Musical passages that are surprising, intense, or emotionally moving produce measurable skin conductance responses (SCRs).
+\end{itemize}
+
+By recording both HR and EDA simultaneously during exposure to three distinct music genres, we can separately observe sympathetic-only arousal (EDA) and the net sympathetic--parasympathetic balance (HR).
+
+\textbf{Why these three genres?} They map onto different regions of the arousal--valence circumplex model used in affective neuroscience:
+\begin{itemize}[nosep]
+    \item \textbf{Classical (Debussy):} Low arousal, positive valence
+    \item \textbf{Heavy metal (Metallica):} High arousal, mixed/negative valence
+    \item \textbf{Pop/funk (Earth, Wind \& Fire):} Moderate--high arousal, positive valence
+\end{itemize}
+
+% ----------------------------------------------------------------
+\section{Equipment Checklist}
+
+Gather all items \textbf{before} starting. Check each off:
+
+\begin{center}
+\begin{tabular}{@{} c l l @{}}
+\toprule
+$\square$ & Arduino UNO R3 & + USB cable \\
+$\square$ & PulseSensor & purple / red / black wires \\
+$\square$ & Grove GSR Sensor & with electrodes, ribbon cable, jumper wires \\
+$\square$ & Phillips screwdriver & for GSR potentiometer calibration \\
+$\square$ & Laptop & with Arduino IDE + Python 3 installed \\
+$\square$ & AirPods Pro (or ANC over-ear headphones) & see Section~\ref{sec:audio} \\
+$\square$ & iPhone (or phone with dB meter app) & for volume calibration \\
+$\square$ & Stopwatch / timer & phone timer app is fine (on the \emph{other} phone or watch) \\
+$\square$ & Pen + printed copy of this protocol & to write down timestamps \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ----------------------------------------------------------------
+\section{Audio Setup -- Critical Details}
+\label{sec:audio}
+
+Getting the audio right is essential for a controlled experiment. Inconsistent audio delivery is the most common confound in music psychophysiology studies.
+
+\subsection{Headphone Selection (in order of preference)}
+
+\begin{enumerate}[nosep]
+    \item \textbf{AirPods Pro (best choice):} Active Noise Cancellation (ANC) \textbf{ON}, Transparency mode \textbf{OFF}. ANC blocks ambient lab noise so the only auditory stimulus is the music (or silence). iOS also reports real-time headphone dB levels.
+    \item \textbf{Over-ear closed-back ANC headphones} (e.g.\ Sony WH-1000XM series, Bose QC): ANC \textbf{ON}. Same rationale.
+    \item \textbf{Over-ear closed-back passive headphones} (no ANC): Acceptable if the lab is quiet. Provides physical isolation.
+\end{enumerate}
+
+\begin{warningbox}
+\textbf{Do NOT use:}
+\begin{itemize}[nosep]
+    \item Open-back headphones or earbuds without ANC -- ambient noise leaks in and varies.
+    \item Laptop / external speakers -- sound level at the ear changes with head position, and everyone in the lab hears it.
+    \item AirPods Pro in Transparency mode -- this pipes ambient noise in, defeating the purpose.
+\end{itemize}
+\end{warningbox}
+
+\subsection{Volume Calibration}
+
+The target playback level is \textbf{70\,dB SPL}. This is a comfortable conversational listening level -- loud enough to be clearly heard but not fatiguing over 20 minutes. The \textbf{same volume must be used for all three genres}. Do not adjust volume mid-experiment.
+
+\begin{tcolorbox}[colback=yellow!5!white, colframe=orange!60!black, title=\textbf{How to set 70\,dB with AirPods + iPhone}]
+\begin{enumerate}[nosep]
+    \item Open \textbf{Settings $\rightarrow$ Control Center}. Add \textbf{Hearing} if not already there.
+    \item Connect your AirPods. Play the \emph{calibration song} (see below).
+    \item Swipe into Control Center and tap the \textbf{ear icon} (Hearing). It shows real-time headphone dB.
+    \item Adjust the volume slider until the reading is \textbf{70\,dB}. Note the exact volume slider position.
+    \item \textbf{Lock the volume.} Do not touch it again for the entire experiment.
+\end{enumerate}
+\textbf{Calibration song:} Play 30 seconds of any of the three experimental tracks (Metallica is easiest because it is dynamically compressed and reads a consistent level). Adjust to 70\,dB average.
+\end{tcolorbox}
+
+\begin{infobox}
+\textbf{If you don't have AirPods or iOS:} Download the free \textbf{NIOSH SLM} app (iOS) or \textbf{Sound Meter} (Android). Hold the phone's microphone right at the headphone driver/ear cup opening, play the calibration song, and adjust to 70\,dB. This is less precise than the iOS Hearing feature but adequate.
+\end{infobox}
+
+\textbf{Why 70\,dB?}
+\begin{itemize}[nosep]
+    \item Below 60\,dB the music may not be salient enough to produce an ANS response.
+    \item Above 80\,dB introduces a \emph{startle / discomfort} confound and risks hearing fatigue.
+    \item 70\,dB is the standard in published music psychophysiology protocols (e.g., Salimpoor et al., 2009).
+\end{itemize}
+
+\textbf{Why the same dB across genres?}
+Perceived loudness differs across genres even at equal dB (metal is dynamically compressed, classical has wide dynamic range). However, controlling \emph{physical} sound level (dB SPL) is the standard approach. The difference in perceived loudness is actually part of the real-world stimulus -- if we loudness-normalized perceptually we'd be removing a genuine feature of each genre.
+
+% ----------------------------------------------------------------
+\section{Song Selection}
+
+Songs were chosen to span distinct regions of the arousal--valence circumplex.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{@{} l l X l @{}}
+\toprule
+\textbf{Condition} & \textbf{Song} & \textbf{Why this song} & \textbf{Start at} \\
+\midrule
+Calm & Debussy -- \textit{Clair de Lune} & Instrumental, slow tempo ($\sim$72\,BPM), consonant harmony, no lyrics. Universally rated as calming. & 0:00 \\
+\addlinespace
+Intense & Metallica -- \textit{Master of Puppets} & Fast tempo ($\sim$212\,BPM), distorted guitars, aggressive vocals, high spectral energy. Universally rated as high-arousal. & 0:00 \\
+\addlinespace
+Happy & Earth, Wind \& Fire -- \textit{September} & Major key, danceable groove ($\sim$126\,BPM), positive lyrics, brass instrumentation. High positive valence. & 0:00 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{tipbox}
+\textbf{Pre-load all three songs} on your phone before the lab. Use downloaded/offline copies (Spotify offline, Apple Music downloads, or local files) so there are no buffering interruptions or ad breaks mid-recording. Queue them in a playlist in the order: Debussy $\rightarrow$ Metallica $\rightarrow$ September. You will manually start each one at the right time.
+\end{tipbox}
+
+% ----------------------------------------------------------------
+\section{Sensor Wiring}
+
+Both sensors connect to the \textbf{same} Arduino UNO simultaneously. The key change from Lab~1 is that the GSR sensor moves to \textbf{A1} (it used A0 in Lab~1).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{} l l l l l @{}}
+\toprule
+\textbf{Sensor} & \textbf{Signal wire} & \textbf{$\rightarrow$ Arduino pin} & \textbf{Power wire} & \textbf{Ground wire} \\
+\midrule
+PulseSensor & Purple & \textbf{A0} & Red $\rightarrow$ 5V & Black $\rightarrow$ GND \\
+Grove GSR   & Yellow & \textbf{A1} & Red $\rightarrow$ 5V & Black $\rightarrow$ GND \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Wiring notes:}
+\begin{itemize}[nosep]
+    \item The Arduino UNO has two GND pins (one near the power headers, one near digital pins). Use one for each sensor.
+    \item Both sensors share the single 5V pin. Connect both red wires to 5V using a small breadboard or Y-jumper. Alternatively, daisy-chain: plug one red wire into 5V, and splice/twist the second onto it.
+    \item Double-check wiring \textbf{before} plugging in USB.
+\end{itemize}
+
+\begin{warningbox}
+Do \textbf{not} connect sensors to your body while the laptop is plugged into mains AC power. Work on battery power or unplug the charger. This is the same safety rule from Lab~1.
+\end{warningbox}
+
+% ----------------------------------------------------------------
+\section{Software Setup (do this before the experiment)}
+
+\begin{enumerate}[nosep]
+    \item Open \textbf{Arduino IDE}. Open the file \texttt{dual\_sensor/dual\_sensor.ino}.
+    \item Select your board: \textbf{Tools $\rightarrow$ Board $\rightarrow$ Arduino Uno}.
+    \item Select your port: \textbf{Tools $\rightarrow$ Port $\rightarrow$} (the one that says ``Arduino Uno'').  \textbf{Write down this port name} -- you need it for Python.
+    \item Click \textbf{Upload} (right-arrow icon). Wait for ``Done uploading.''
+    \item \textbf{Close the Arduino IDE Serial Monitor} (if open). Python needs exclusive access to the serial port.
+    \item Open \textbf{Terminal}. Navigate to the \texttt{lab3/} folder: \texttt{cd \textasciitilde/Documents/BME/lab3}
+    \item Install Python dependencies (one-time): \texttt{pip install pyserial matplotlib numpy scipy pandas}
+    \item Open \texttt{acquire\_data.py} in any text editor. Change \texttt{SERIAL\_PORT} to the port you noted in step~3.
+\end{enumerate}
+
+\subsection{GSR Calibration}
+
+Before starting the experiment, calibrate the GSR sensor (same procedure as Lab~1):
+\begin{enumerate}[nosep]
+    \item Temporarily open Arduino IDE Serial Monitor (baud 115200).
+    \item \textbf{Without} wearing the GSR electrodes, use the Phillips screwdriver to turn the potentiometer on the Grove GSR board until the serial output reads approximately \textbf{512}.
+    \item Close Serial Monitor again.
+\end{enumerate}
+
+\subsection{Sensor Placement}
+
+\begin{itemize}[nosep]
+    \item \textbf{PulseSensor:} Place on the fingertip of your \textbf{non-dominant hand} (e.g., left index finger). The LED should sit right under the distal tip of the fingernail, not beyond the fingertip. Secure gently with tape or a velcro strap. The finger should rest on the table -- do not hold it up.
+    \item \textbf{GSR electrodes:} Place on the \textbf{middle and ring fingers of the same (non-dominant) hand}, on the palmar (inside) surface of the middle phalanx. Electrodes should be snug but not tight enough to cut off circulation.
+    \item \textbf{Hand position:} Rest the instrumented hand flat on the table, palm-down, for the entire experiment. Do not move, scratch, or fidget with that hand.
+\end{itemize}
+
+\begin{infobox}
+\textbf{Do not} wash your hands with soap or use hand sanitizer immediately before the experiment. The GSR signal requires some natural moisture on the skin. If your hands are very cold, warm them gently first (cold hands vasoconstrict and weaken the PPG signal).
+\end{infobox}
+
+% ----------------------------------------------------------------
+\section{Experimental Protocol}
+\label{sec:protocol}
+
+\textbf{Total duration: $\sim$20 minutes of recording + 5 minutes setup.}
+
+\subsection{Pre-experiment Checklist}
+
+\begin{enumerate}[nosep]
+    \item[$\square$] Sensors wired and calibrated (Section 6--7).
+    \item[$\square$] \texttt{dual\_sensor.ino} uploaded to Arduino.
+    \item[$\square$] Arduino IDE Serial Monitor \textbf{closed}.
+    \item[$\square$] Python open with \texttt{acquire\_data.py}, COM port updated.
+    \item[$\square$] Songs downloaded and queued on phone.
+    \item[$\square$] AirPods connected, ANC ON, volume set to 70\,dB.
+    \item[$\square$] Laptop on battery power (charger unplugged).
+    \item[$\square$] Stopwatch / timer ready.
+    \item[$\square$] Pen and this protocol printout in front of you.
+    \item[$\square$] Sensors on fingers, hand resting flat, comfortable seated position.
+\end{enumerate}
+
+\subsection{Recording Procedure}
+
+Have your lab partner operate the timer and music controls so you can sit still.
+
+\begin{enumerate}
+    \item \textbf{Start Python acquisition:} In Terminal, run \texttt{python3 acquire\_data.py}. Verify the live plot shows PPG oscillations and a steady GSR line. If not, debug wiring now. Once confirmed, \textbf{start the stopwatch}.
+
+    \item \textbf{Write down the start time} on this sheet: \underline{\hspace{3cm}} (HH:MM:SS).
+\end{enumerate}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{} >{\bfseries}c l c c p{5.5cm} @{}}
+\toprule
+\textbf{Phase} & \textbf{Condition} & \textbf{Duration} & \textbf{Stopwatch} & \textbf{Instructions} \\
+\midrule
+\rowcolor{gray!10}
+1 & Silence (Baseline) & 3 min & 0:00 & Sit still, eyes open, breathe normally. No phone, no talking. \\
+2 & Silence (Recovery) & 2 min & 3:00 & Continue sitting still. \\
+\rowcolor{blue!5}
+3 & Calm Music & 3 min & 5:00 & Partner presses play on \textit{Clair de Lune}. Listen passively with eyes open. \\
+4 & Silence (Recovery) & 2 min & 8:00 & Partner pauses music. Sit still. \\
+\rowcolor{red!5}
+5 & Intense Music & 3 min & 10:00 & Partner presses play on \textit{Master of Puppets}. Listen passively. \\
+6 & Silence (Recovery) & 2 min & 13:00 & Partner pauses music. Sit still. \\
+\rowcolor{yellow!10}
+7 & Happy Music & 3 min & 15:00 & Partner presses play on \textit{September}. Listen passively. \\
+8 & Silence (Recovery) & 2 min & 18:00 & Partner pauses music. Final cooldown. \\
+\midrule
+& \textbf{STOP} & & 20:00 & Partner presses \textbf{Ctrl+C} in Python. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.3cm}
+\textbf{Timestamp log} (write actual stopwatch times here in case of delays):
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{} l c @{}}
+\toprule
+\textbf{Event} & \textbf{Actual stopwatch time} \\
+\midrule
+Python recording started                      & \underline{\hspace{3cm}} \\
+Baseline started (Phase 1)                     & \underline{\hspace{3cm}} \\
+Recovery 1 started (Phase 2)                   & \underline{\hspace{3cm}} \\
+Calm music started -- \textit{Clair de Lune} (Phase 3)   & \underline{\hspace{3cm}} \\
+Recovery 2 started (Phase 4)                   & \underline{\hspace{3cm}} \\
+Intense music started -- \textit{Master of Puppets} (Phase 5) & \underline{\hspace{3cm}} \\
+Recovery 3 started (Phase 6)                   & \underline{\hspace{3cm}} \\
+Happy music started -- \textit{September} (Phase 7)      & \underline{\hspace{3cm}} \\
+Recovery 4 started (Phase 8)                   & \underline{\hspace{3cm}} \\
+Recording stopped (Ctrl+C)                     & \underline{\hspace{3cm}} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Important Rules During Recording}
+
+\begin{itemize}[nosep]
+    \item \textbf{Do not move the sensor hand.} Even small movements create large GSR artifacts and PPG dropouts.
+    \item \textbf{Do not talk.} Speaking changes breathing pattern and chest muscle tension.
+    \item \textbf{Do not look at the live plot.} Seeing your own heart rate can cause anxiety, which is a confound. Have the screen facing your partner, not you.
+    \item \textbf{Breathe normally.} Do not consciously control your breathing.
+    \item \textbf{Do not tap along to the music.} Keep both feet flat on the floor.
+\end{itemize}
+
+% ----------------------------------------------------------------
+\section{Data Analysis}
+
+After the experiment, run \texttt{analyze\_data.py}.
+
+\subsection{Before Running}
+
+\begin{enumerate}[nosep]
+    \item Open \texttt{analyze\_data.py} in any text editor.
+    \item Update the \texttt{PHASE\_START\_S} list with your \textbf{actual timestamps} from the log above. Convert stopwatch times (MM:SS) to total seconds (e.g., 5:00 $\rightarrow$ 300, 10:15 $\rightarrow$ 615).
+    \item In Terminal: \texttt{python3 analyze\_data.py}
+\end{enumerate}
+
+\subsection{What the Script Produces}
+
+\begin{enumerate}[nosep]
+    \item \textbf{fig1\_timeseries.png} -- Full time-series of HR and EDA with phase markers.
+    \item \textbf{fig2\_comparison.png} -- Bar charts comparing mean HR and mean EDA across the four conditions (baseline, calm, intense, happy) with standard deviation error bars.
+    \item \textbf{fig3\_ppg\_waveform.png} -- A 10-second snippet of the filtered PPG waveform with detected peaks, to show signal quality.
+    \item \textbf{fig4\_hrv.png} -- RMSSD (root mean square of successive R-R differences), a measure of heart rate variability, for each condition. Calm music is expected to show higher HRV (more parasympathetic tone) than intense music.
+    \item \textbf{Console output} -- A table of mean $\pm$ SD for HR and EDA per phase.
+\end{enumerate}
+
+\subsection{Signal Processing Details (for your report)}
+
+\begin{itemize}[nosep]
+    \item \textbf{PPG $\rightarrow$ Heart Rate:} The raw PPG signal is bandpass filtered (0.5--5\,Hz, 2nd-order Butterworth) to isolate the cardiac pulse. Peaks are detected with a minimum inter-peak distance of 0.4\,s (150\,BPM ceiling). Instantaneous HR is computed as $60 / \Delta t_{\text{peak}}$.
+    \item \textbf{GSR $\rightarrow$ Skin Conductance:} The raw ADC value is converted to resistance using the Grove GSR formula: $R = \frac{(1024 + 2 \times \text{ADC}) \times 10^5}{512 - \text{ADC}}$, then to conductance in $\mu$S as $G = 10^6 / R$.
+    \item \textbf{HRV (RMSSD):} Successive R-R interval differences are computed and the root-mean-square is taken. Higher RMSSD indicates greater parasympathetic (vagal) modulation.
+\end{itemize}
+
+% ----------------------------------------------------------------
+\section{Expected Results}
+
+Based on published literature, you should expect:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{} l c c c @{}}
+\toprule
+\textbf{Measure} & \textbf{Calm vs.\ Baseline} & \textbf{Intense vs.\ Baseline} & \textbf{Happy vs.\ Baseline} \\
+\midrule
+Heart Rate      & slight decrease or no change & increase (3--8\,BPM) & moderate increase \\
+EDA             & no change or slight decrease & increase (most arousing) & slight increase \\
+HRV (RMSSD)     & increase (more vagal tone) & decrease & slight decrease \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+If your results differ, that is fine -- discuss possible reasons (familiarity with the song, personal music preference, movement artifacts, etc.) in your reflection.
+
+% ----------------------------------------------------------------
+\section{Report Structure}
+
+The submission is a single PDF. Suggested structure:
+
+\begin{enumerate}[nosep]
+    \item \textbf{Background \& Rationale} ($\sim$0.5 page): Why music affects the ANS (use Section~2 of this document as a starting point, but write in your own words).
+    \item \textbf{Hypothesis}: The if/then/therefore statement from Section~1.
+    \item \textbf{Methods} ($\sim$0.5 page): Sensor setup, audio setup (headphone type, dB level), song choices, protocol table.
+    \item \textbf{Results} ($\sim$1 page): Include Figures 1--4. Describe what you observe.
+    \item \textbf{Reflection} ($\sim$0.5 page): Did results support the hypothesis? What surprised you? What would you change if you repeated it? Limitations (single subject, no counterbalancing of genre order, etc.).
+\end{enumerate}
+
+% ----------------------------------------------------------------
+\section{Troubleshooting}
+
+\begin{tabularx}{\textwidth}{@{} l X @{}}
+\toprule
+\textbf{Problem} & \textbf{Solution} \\
+\midrule
+``Could not open port'' & Close Arduino IDE Serial Monitor. Only one program can use the port. \\
+\addlinespace
+PPG signal is flat / noisy & Reposition sensor so LED is centered under fingernail. Warm cold hands. Make sure finger is resting on table, not held up. \\
+\addlinespace
+GSR reads 0 or 1023 constantly & Re-calibrate the potentiometer to $\sim$512 with electrodes off. Check wiring is on A1, not A0. \\
+\addlinespace
+Live plot updates but no data saved & Check baud rate is 115200 in both Arduino sketch and Python script. \\
+\addlinespace
+Both sensors worked alone but not together & Ensure both share 5V properly (use breadboard or twist wires). Check both GND connections are solid. \\
+\addlinespace
+Music playback interrupted by notification & Put phone in Do Not Disturb / Focus mode before starting. \\
+\bottomrule
+\end{tabularx}
+
+% ----------------------------------------------------------------
+\vfill
+\begin{center}
+\small
+\textit{Protocol prepared for BME Lab 3 -- DIY.}
+\end{center}
+
+\end{document}
